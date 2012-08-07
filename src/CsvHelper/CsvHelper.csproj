@@ -86,6 +86,7 @@
     <Compile Include="CsvReader.cs" />
     <Compile Include="Configuration\CsvConfiguration.cs" />
     <Compile Include="CsvReaderException.cs" />
+    <Compile Include="CsvRecordDynamic.cs" />
     <Compile Include="CsvWriter.cs" />
     <Compile Include="CsvWriterException.cs" />
     <Compile Include="ICsvParser.cs" />

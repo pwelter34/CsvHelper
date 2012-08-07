@@ -563,6 +563,36 @@ namespace CsvHelper
 			}
 		}
 
+#if !NET_3_5
+		public virtual dynamic GetRecordDynamic()
+		{
+			CheckDisposed();
+			CheckHasBeenRead();
+
+			if( headerRecord == null )
+			{
+				throw new CsvReaderException( "There must be a header record to use a dynamic object." );
+			}
+
+			return new CsvRecordDynamic( Configuration, namedIndexes, currentRecord );
+		}
+
+		public virtual IEnumerable<dynamic> GetRecordsDynamic()
+		{
+			CheckDisposed();
+
+			if (headerRecord == null)
+			{
+				throw new CsvReaderException("There must be a header record to use a dynamic object.");
+			}
+
+			while( Read() )
+			{
+				yield return new CsvRecordDynamic(Configuration, namedIndexes, currentRecord);
+			}
+		}
+#endif
+
 		/// <summary>
 		/// Invalidates the record cache for the given type. After <see cref="ICsvReader.GetRecord{T}"/> is called the
 		/// first time, code is dynamically generated based on the <see cref="CsvPropertyMapCollection"/>,

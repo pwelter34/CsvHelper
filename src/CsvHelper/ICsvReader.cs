@@ -6,6 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using CsvHelper.Configuration;
+#if !NET_2_0
+#if !NET_3_5
+using System.Dynamic;
+#endif
+#endif
 
 namespace CsvHelper
 {
@@ -231,7 +236,7 @@ namespace CsvHelper
 		/// should not be used when using this.
 		/// </summary>
 		/// <typeparam name="T">The <see cref="Type"/> of the record.</typeparam>
-		/// <returns>An <see cref="IList{T}" /> of records.</returns>
+		/// <returns>An <see cref="IEnumerable{T}" /> of records.</returns>
 		IEnumerable<T> GetRecords<T>() where T : class;
 
 		/// <summary>
@@ -240,7 +245,7 @@ namespace CsvHelper
 		/// should not be used when using this.
 		/// </summary>
 		/// <param name="type">The <see cref="Type"/> of the record.</param>
-		/// <returns>An <see cref="IList{Object}" /> of records.</returns>
+		/// <returns>An <see cref="IEnumerable{Object}" /> of records.</returns>
 		IEnumerable<object> GetRecords( Type type );
 
 		/// <summary>
@@ -261,6 +266,20 @@ namespace CsvHelper
 		/// </summary>
 		/// <param name="type">The type to invalidate.</param>
 		void InvalidateRecordCache( Type type );
+
+#if !NET_3_5
+		/// <summary>
+		/// Gets a dynamic record object.
+		/// </summary>
+		/// <returns>A record as a <see cref="DynamicObject"/> object.</returns>
+		dynamic GetRecordDynamic();
+
+		/// <summary>
+		/// Gets all of the records as dynamic objects.
+		/// </summary>
+		/// <returns>An <see cref="IEnumerable{DynamicObject}"/> of records.</returns>
+		IEnumerable<dynamic> GetRecordsDynamic();
+#endif
 #endif
 	}
 }
