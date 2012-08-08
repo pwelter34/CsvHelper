@@ -35,14 +35,15 @@ namespace CsvHelper.Tests
 // ReSharper restore SuggestUseVarKeywordEverywhere
 
 			Assert.NotNull( record );
-			Assert.Equal( 1, (int)record.Id );
-			Assert.Equal( "one", (string)record.Name );
+			Assert.Equal( "1", record.Id );
+			Assert.Equal( "one", record.Name );
+			Assert.Throws<CsvMissingFieldException>( () => record.DoesNotExist );
 
 			reader.Read();
 			record = reader.GetRecordDynamic();
 
 			Assert.NotNull( record );
-			Assert.Equal( 2, record.Id );
+			Assert.Equal( "2", record.Id );
 			Assert.Equal( "two", record.Name );
 
 			Assert.False( reader.Read() );

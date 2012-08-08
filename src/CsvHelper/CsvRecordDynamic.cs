@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Dynamic;
 using CsvHelper.Configuration;
 
@@ -34,14 +35,17 @@ namespace CsvHelper
 		public override bool TryGetMember( GetMemberBinder binder, out object result )
 		{
 			var index = GetFieldIndex( binder.Name );
-			result = index == -1 ? null : this.currentRecord[index];
-			if( index == -1 && configuration.IsStrictMode )
+			if( index == -1 )
 			{
 				// If the index isn't found and we're in strict mode
 				// the get member should fail. If we're not in strict
 				// mode, the object is just set to null.
-				return false;
+				result = null;
+				return !configuration.IsStrictMode;
 			}
+
+			result = currentRecord[index];
+
 			return true;
 		}
 

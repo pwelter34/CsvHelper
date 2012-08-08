@@ -8,6 +8,9 @@ using System.ComponentModel;
 using System.IO;
 #if !NET_2_0
 using System.Linq.Expressions;
+#if !NET_3_5
+using System.Dynamic;
+#endif
 #endif
 using CsvHelper.Configuration;
 #if NET_2_0
@@ -564,6 +567,10 @@ namespace CsvHelper
 		}
 
 #if !NET_3_5
+		/// <summary>
+		/// Gets a dynamic record object.
+		/// </summary>
+		/// <returns>A record as a <see cref="DynamicObject"/> object.</returns>
 		public virtual dynamic GetRecordDynamic()
 		{
 			CheckDisposed();
@@ -577,18 +584,22 @@ namespace CsvHelper
 			return new CsvRecordDynamic( Configuration, namedIndexes, currentRecord );
 		}
 
+		/// <summary>
+		/// Gets all of the records as dynamic objects.
+		/// </summary>
+		/// <returns>An <see cref="IEnumerable{DynamicObject}"/> of records.</returns>
 		public virtual IEnumerable<dynamic> GetRecordsDynamic()
 		{
 			CheckDisposed();
 
-			if (headerRecord == null)
+			if( headerRecord == null )
 			{
-				throw new CsvReaderException("There must be a header record to use a dynamic object.");
+				throw new CsvReaderException( "There must be a header record to use a dynamic object." );
 			}
 
 			while( Read() )
 			{
-				yield return new CsvRecordDynamic(Configuration, namedIndexes, currentRecord);
+				yield return new CsvRecordDynamic( Configuration, namedIndexes, currentRecord );
 			}
 		}
 #endif
